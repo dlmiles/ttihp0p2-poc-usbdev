@@ -25,9 +25,15 @@ jobs:
 
       - name: Run tests
         run: |
+          iverilog -V 2>&1 | head -n1 || true
           cd test
+
           make clean
+          rm -f results.xml
+
           make
+          test -f results.xml
+
           # make will return success even if the test fails, so check for failure in the results.xml
           ! grep failure results.xml
 

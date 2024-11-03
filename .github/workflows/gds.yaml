@@ -13,6 +13,23 @@ jobs:
         with:
           submodules: recursive
 
+      - name: patch
+        run: |
+          cd src
+
+          ./check_verilog_timerconsts.sh || true
+
+          echo "### Temporary patch remove before production and signoff"
+          echo "### For local simulation these timers values are 1/200th or 1/25th or 1/20th of the normal wall-clock time"
+          echo "### This patch restores the production values to meet USB specification with a 48MHz PHY clock source"
+
+          ./check_verilog_timerconsts.sh patch quiet
+
+          echo ""
+          echo "### This now validates the values inside verilog are production system values or halts the CI"
+
+          ./check_verilog_timerconsts.sh
+
       - name: Build GDS
         uses: TinyTapeout/tt-gds-action/orfs@tt09
 
@@ -66,6 +83,25 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y ./iverilog_13.0-git-d8c3c51a-1_amd64.deb
 
+     - name: patch
+       run: |
+         cd src
+
+         if ! ./check_verilog_timerconsts.sh
+         then
+           echo "### Temporary patch remove before production and signoff"
+           echo "### For local simulation these timers values are 1/200th or 1/25th or 1/20th of the normal wall-clock time"
+           echo "### This patch restores the production values to meet USB specification with a 48MHz PHY clock source"
+
+           ./check_verilog_timerconsts.sh patch quiet
+         fi
+
+         echo ""
+         echo "### This now validates the values inside verilog are production system values or halts the CI"
+
+         ./check_verilog_timerconsts.sh
+         ### NOTE: For the purpose of gatelevel testing this file is not used, this is run for the positive confirmation
+
      - name: Run tests
        shell: bash
        run: |
@@ -85,7 +121,8 @@ jobs:
        with:
            name: gatelevel_test_vcd
            path: |
-             ${{ env.TEST_DIR }}/tb.vcd
+             ${{ env.TEST_DIR }}/*.vcd
+             ${{ env.TEST_DIR }}/*.fst
              ${{ env.TEST_DIR }}/results.xml
 
      - name: Test Summary

@@ -1,55 +1,59 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
-  author:       ""      # Your name
+  title:        "USB Device"      # Project title
+  author:       "Darryl Miles"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
+  description:  "USB FullSpeed/LowSpeed device (proof-of-concept)"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
-  clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
+  clock_hz:     48000000       # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
-  tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2 or 6x2
+  tiles: "3x2"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2 or 6x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_example"
+  top_module:  "tt_um_dlmiles_tt04_poc_usbdev"
 
   # List your project's source files here.
   # Source files must be in ./src and you must list each source file separately, one per line.
   # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
   source_files:
-    - "project.v"
+    - "tt_um.vh"
+    - "config.vh"
+    - "top_tt_um_dlmiles_tt04_poc_usbdev.v"
+    - "tt04_to_wishbone.v"
+    - "UsbDeviceTop.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
   # Inputs
-  ui[0]: ""
-  ui[1]: ""
-  ui[2]: ""
-  ui[3]: ""
-  ui[4]: ""
-  ui[5]: ""
-  ui[6]: ""
-  ui[7]: ""
+  ui[0]: "tt2wb input bit0"
+  ui[1]: "tt2wb input bit1"
+  ui[2]: "tt2wb input bit2"
+  ui[3]: "tt2wb input bit3"
+  ui[4]: "tt2wb input bit4"
+  ui[5]: "tt2wb input bit5"
+  ui[6]: "tt2wb input bit6"
+  ui[7]: "tt2wb input bit7"
 
   # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
-  uo[4]: ""
-  uo[5]: ""
-  uo[6]: ""
-  uo[7]: ""
+  uo[0]: "tt2wb output bit0"
+  uo[1]: "tt2wb output bit1"
+  uo[2]: "tt2wb output bit2"
+  uo[3]: "tt2wb output bit3"
+  uo[4]: "tt2wb output bit4"
+  uo[5]: "tt2wb output bit5"
+  uo[6]: "tt2wb output bit6"
+  uo[7]: "tt2wb output bit7"
 
   # Bidirectional pins
-  uio[0]: ""
-  uio[1]: ""
-  uio[2]: ""
-  uio[3]: ""
-  uio[4]: ""
-  uio[5]: ""
-  uio[6]: ""
-  uio[7]: ""
+  uio[0]: "USB D+ (bidi)"
+  uio[1]: "USB D- (bidi)"
+  uio[2]: "Interrupt (output only)"
+  uio[3]: "Phy Clock 48MHz (input only)"
+  uio[4]: "tt2wb control ACK (output only)"
+  uio[5]: "tt2wb control CMD bit0 (input only)"
+  uio[6]: "tt2wb control CMD bit1 (input only)"
+  uio[7]: "tt2wb control CMD bit2 (input only)"
 
 # Do not change!
 yaml_version: 6

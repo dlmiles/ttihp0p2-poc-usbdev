@@ -8,13 +8,13 @@ SRC_DIR = $(PWD)/../src
 PROJECT_SOURCES  = top_tt_um_dlmiles_tt04_poc_usbdev.v
 PROJECT_SOURCES += tt04_to_wishbone.v
 PROJECT_SOURCES += UsbDeviceTop.v
+COMPILE_ARGS 	+= -I$(SRC_DIR)
 
 ifneq ($(GATES),yes)
 
 # RTL simulation:
 SIM_BUILD	= sim_build/rtl
 VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
-COMPILE_ARGS 	+= -I$(SRC_DIR)
 
 else
 
